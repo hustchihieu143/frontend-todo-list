@@ -1,26 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect } from "react";
+import { Router } from "react-router";
+import { createBrowserHistory } from "history";
+import { Route, Switch } from "react-router-dom";
+import routers from "./routes/routes";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const browserHistory = createBrowserHistory();
+
+const App: React.FC<any> = () => {
+    return (
+        <Router history={browserHistory}>
+            <React.Suspense fallback={<div>....Loading</div>}>
+                <Switch>
+                    {Object.keys(routers).map((key) => {
+                        //@ts-ignore
+                        const route = routers[key];
+                        return <Route key={route.path} {...route} />;
+                    })}
+                </Switch>
+            </React.Suspense>
+        </Router>
+    );
+};
 
 export default App;
